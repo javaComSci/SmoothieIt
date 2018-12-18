@@ -11,6 +11,7 @@ from keras.layers import Dense, Dropout
 from keras.utils import np_utils
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.svm import SVC
 
 def getFlatImg(fileName):
     fruitPics = os.listdir(fileName)
@@ -39,14 +40,15 @@ def getImg(imgType):
     inputs = np.vstack(inputs)
     outputs = np.vstack(outputs)
     outputs = outputs.flatten()
+    print("OUTPUT", outputs)
     le_out = LabelEncoder()
-    outputs = le_out.fit_transform(outputs) 
+    encodeOutputs = le_out.fit_transform(outputs) 
     onehot_encoder = OneHotEncoder(sparse=False)
-    outputs = outputs.reshape(len(outputs), 1)
-    onehot_encoded = onehot_encoder.fit_transform(outputs)
+    encodeOutputs = encodeOutputs.reshape(len(encodeOutputs), 1)
+    onehot_encoded = onehot_encoder.fit_transform(encodeOutputs)
     print("INPUTS",  inputs.shape, inputs)
-    print("OUTPUTS", outputs.shape, outputs, onehot_encoded)
-    return (inputs, onehot_encoded)
+    print("OUTPUTS", encodeOutputs.shape, encodeOutputs, onehot_encoded)
+    return (inputs, outputs, onehot_encoded)
     
 def getTrainingImg():
     return getImg('fruits-360/Training/')
@@ -82,7 +84,6 @@ def evaluateModel(model, inputs, outputs):
 	return (loss, acc)
 
 def trainModelWithValidation(trainInput, trainOutput):
-	np.random.seed(1234)
 	trainInput, trainOutput = shuffleData(trainInput, trainOutput)
 	tInput = trainInput[:9000,:]
 	tOutput = trainOutput[:9000,:]
@@ -108,20 +109,35 @@ def trainModelWithValidation(trainInput, trainOutput):
 def testModel(model, testInput, testOutput):
 	testLoss, testAcc = evaluateModel(model, testInput, testOutput)
 	print("Test loss", testLoss, "test acc", testAcc)
+	return model
 
-def main():
-	# get training and testing input and output
-	# training and validation set
-	trainInput, trainOutput = getTrainingImg()
-
-	# testing set
-	testInput, testOutput = getTestingImg()
-
+def trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput):
 	# train and validate to get best model
-	model = trainModelWithValidation(trainInput, trainOutput)
+	model = trainModelWithValidation(trainInput, trainEncodedOutput)
 
 	# test on best model
-	testModel(model, testInput, testOutput)
+	testModel(model, testInput, testEncodedOutput)
 
+	# best dropout rate is [0.05, 0.1]
+	return model
+
+def trainSVM(trainInput, trainOutput, testInput, testOutput):
+	clf = SVC(C=0.5, kernel='poly', degree=3, verbose=True, decision_function_shape='ovr', max_iter=300)
+	clf.fit(trainInput, trainOutput)
+	clf.score(testInput, testOutput)
+	return clf
+
+def main():
+	np.random.seed(1234)
+	# get training and testing input and output
+	# training and validation set
+	trainInput, trainOutput, trainEncodedOutput = getTrainingImg()
+
+	# testing set
+	testInput, testOutput, testEncodedOutput = getTestingImg()
+
+	# modelNN = trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput)
+
+	modelSVM = trainSVM(trainInput, trainOutput, testInput, testOutput)
 if __name__ == "__main__":
 	main()
