@@ -136,8 +136,9 @@ def main():
 	# testing set
 	testInput, testOutput, testEncodedOutput = getTestingImg()
 
-	# modelNN = trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput)
+	modelNN = trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput)
 
-	modelSVM = trainSVM(trainInput, trainOutput, testInput, testOutput)
+	# modelSVM = trainSVM(trainInput, trainOutput, testInput, testOutput)
+	
 if __name__ == "__main__":
 	main()
