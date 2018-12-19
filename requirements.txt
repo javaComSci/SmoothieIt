@@ -10,11 +10,11 @@ Keras-Preprocessing==1.0.5
 MarkupSafe==1.1.0
 numpy==1.15.4
 opencv-python==3.4.4.19
-protobuf==3.1.0
+protobuf==3.0.0b2
 PyYAML==3.13
 scikit-learn==0.20.1
 scipy==1.2.0
 six==1.12.0
 sklearn==0.0
-tensorflow==1.12.0
+tensorflow==0.10.0
 Werkzeug==0.14.1
