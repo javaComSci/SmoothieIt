@@ -31,11 +31,22 @@ def getModel():
 	# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 	import tensorflow as tf
 	from SmoothieIt import predictNeuralNet
-	model = predictNeuralNet()
-	model.evaluate
-	# print("\n\n\nMODEL"/)
-	# model.summary()
-	return "MODEL!"
+	print("request")
+	print(request.form['img1'])
+	p1 = ""
+	p2 = ""
+	p3 = ""
+	returnText = "Smoothie recipie requires "
+	if 'img1' in request.form:
+		p1 = predictNeuralNet(request.form['img1'])
+		returnText = returnText + p1
+	if 'img2' in request.form:
+		p2 = predictNeuralNet(request.form['img2'])
+		returnText = returnText + "and " + p2
+	if 'img3' in request.form:
+		p3 = predictNeuralNet(request.form['img3'])
+		returnText = returnText + "and " + p3
+	return returnText
 
 if __name__ == '__main__':
     app.run()

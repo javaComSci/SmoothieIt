@@ -40,29 +40,34 @@ class FruitsButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFile: null,
+      selectedFiles: null,
     };
   }
 
   fileChangedHandler = (event) => {
     const file = event.target.files[0];
+    const newFiles = this.state.selectedFiles;
+    if (newFiles && newFiles.length != 3) {
+      newFiles.append(file);
+    }
     this.setState({
-      selectedFile: file,
+      selectedFiles: newFiles,
     });
   }
 
   uploadHandler = () => {
     console.log("THAT FILE THAT SHOULD BE SENT IS");
-    console.log(this.state.selectedFile);
+    console.log(this.state.selectedFiles);
   }
 
   render() {
-    const imgName = "Upload image " + this.props.count;
     return ( <div>
       <div>
         <form action = "http://localhost:5000/model" method = "post">
-          <input type = "file" onChange={this.fileChangedHandler}/>
-          <input type="submit" value={imgName}/>
+          <input type = "file" onChange={this.fileChangedHandler} name="img1"/>
+          <input type = "file" onChange={this.fileChangedHandler} name="img2"/>
+          <input type = "file" onChange={this.fileChangedHandler} name="img3"/>
+          <input type= "submit" value="Upload images"/>
         </form>
       </div>
     </div>);
@@ -74,9 +79,7 @@ class Fruit extends React.Component {
         return (<div>
             <h1> Smoothie It! </h1>
             <h2> Take a picture of your fruits to create a smoothie recipie </h2>
-            <FruitsButton count = "1" />
-            <FruitsButton count = "2" />
-            <FruitsButton count = "3" />
+            <FruitsButton />
         </div>);
     }
 }
