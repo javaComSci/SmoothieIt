@@ -1,10 +1,11 @@
 import tensorflow as tf
+from tensorflow.python.ops import control_flow_ops 
+# tf.python.control_flow_ops = control_flow_ops
 import cv2
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-from tensorflow import keras
 import keras
 from keras.models import Sequential 
 from keras.layers import Dense, Dropout
@@ -115,6 +116,9 @@ def trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput)
 	# train and validate to get best model
 	model = trainModelWithValidation(trainInput, trainEncodedOutput)
 
+	# save the model
+	model.save('my_model.h5')
+
 	# test on best model
 	testModel(model, testInput, testEncodedOutput)
 
@@ -127,7 +131,7 @@ def trainSVM(trainInput, trainOutput, testInput, testOutput):
 	clf.score(testInput, testOutput)
 	return clf
 
-def main():
+def trainAndSaveModel():
 	np.random.seed(1234)
 	# get training and testing input and output
 	# training and validation set
@@ -137,8 +141,15 @@ def main():
 	testInput, testOutput, testEncodedOutput = getTestingImg()
 
 	modelNN = trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput)
-
-	# modelSVM = trainSVM(trainInput, trainOutput, testInput, testOutput)
 	
-if __name__ == "__main__":
-	main()
+	# return modelNN
+	# modelSVM = trainSVM(trainInput, trainOutput, testInput, testOutput)
+
+def loadModel():
+	new_model = keras.models.load_model('my_model.h5')
+	new_model.summary()
+	return new_model
+# trainAndSaveModel()
+# loadModel()
+# if __name__ == "__main__":
+	# main()
