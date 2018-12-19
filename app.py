@@ -42,10 +42,10 @@ def getModel():
 		returnText = returnText + p1
 	if 'img2' in request.form:
 		p2 = predictNeuralNet(request.form['img2'])
-		returnText = returnText + "and " + p2
+		returnText = returnText + " and " + p2
 	if 'img3' in request.form:
 		p3 = predictNeuralNet(request.form['img3'])
-		returnText = returnText + "and " + p3
+		returnText = returnText + " and " + p3
 	return returnText
 
 if __name__ == '__main__':
