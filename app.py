@@ -10,8 +10,12 @@ app = Flask(__name__)
 def getFruits():
     return "Fruits!"
 
+@app.route('/model')
+def getModel():
+	model = loadModel()
+	print("\n\n\nMODEL")
+	model.summary()
+	return "MODEL!"
+
 if __name__ == '__main__':
-    model = loadModel()
-    print("\n\n\nMODEL")
-    model.summary()
     app.run()
