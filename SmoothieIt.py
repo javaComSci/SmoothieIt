@@ -147,7 +147,7 @@ def trainAndSaveModel():
 
 def loadModel():
 	new_model = keras.models.load_model('my_model.h5')
-	new_model.summary()
+	# new_model.summary()
 	return new_model
 # trainAndSaveModel()
 # loadModel()

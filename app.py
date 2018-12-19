@@ -1,7 +1,9 @@
-import tensorflow as tf
-from tensorflow.python.ops import control_flow_ops 
+# from tensorflow.python.ops import control_flow_ops 
+# import sys
+# f = open('/dev/null', 'w')
+# sys.stdout = f
 from flask import Flask, request
-from SmoothieIt import loadModel
+
 
 app = Flask(__name__)
 
@@ -12,6 +14,15 @@ def getFruits():
 
 @app.route('/model')
 def getModel():
+	import sys
+	import os
+	stderr = sys.stderr
+	sys.stderr = open(os.devnull, 'w')
+	from keras.models import load_model
+	sys.stderr = stderr
+	os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+	import tensorflow as tf
+	from SmoothieIt import loadModel
 	model = loadModel()
 	# print("\n\n\nMODEL")
 	# model.summary()
