@@ -41,14 +41,14 @@ def getImg(imgType):
     inputs = np.vstack(inputs)
     outputs = np.vstack(outputs)
     outputs = outputs.flatten()
-    print("OUTPUT", outputs)
+    # print("OUTPUT", outputs)
     le_out = LabelEncoder()
     encodeOutputs = le_out.fit_transform(outputs) 
     onehot_encoder = OneHotEncoder(sparse=False)
     encodeOutputs = encodeOutputs.reshape(len(encodeOutputs), 1)
     onehot_encoded = onehot_encoder.fit_transform(encodeOutputs)
-    print("INPUTS",  inputs.shape, inputs)
-    print("OUTPUTS", encodeOutputs.shape, encodeOutputs, onehot_encoded)
+    # print("INPUTS",  inputs.shape, inputs)
+    # print("OUTPUTS", encodeOutputs.shape, encodeOutputs, onehot_encoded)
     return (inputs, outputs, onehot_encoded)
     
 def getTrainingImg():
@@ -81,7 +81,7 @@ def shuffleData(inputs, outputs):
 	
 def evaluateModel(model, inputs, outputs):
 	loss, acc = model.evaluate(inputs, outputs)
-	print("Loss", loss, "Accuracy", acc)
+	# print("Loss", loss, "Accuracy", acc)
 	return (loss, acc)
 
 def trainModelWithValidation(trainInput, trainOutput):
@@ -102,14 +102,14 @@ def trainModelWithValidation(trainInput, trainOutput):
 		accuracies.append(accuracy)
 		models.append(model)
 
-	print("Accuracies", accuracies)
+	# print("Accuracies", accuracies)
 	maxAccuracyIndex = accuracies.index(max(accuracies))
-	print("Best dropout rate", dropoutRates[maxAccuracyIndex])
+	# print("Best dropout rate", dropoutRates[maxAccuracyIndex])
 	return models[maxAccuracyIndex]
 
 def testModel(model, testInput, testOutput):
 	testLoss, testAcc = evaluateModel(model, testInput, testOutput)
-	print("Test loss", testLoss, "test acc", testAcc)
+	# print("Test loss", testLoss, "test acc", testAcc)
 	return model
 
 def trainNeuralNet(trainInput, trainEncodedOutput, testInput, testEncodedOutput):

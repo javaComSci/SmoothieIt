@@ -13,8 +13,8 @@ def getFruits():
 @app.route('/model')
 def getModel():
 	model = loadModel()
-	print("\n\n\nMODEL")
-	model.summary()
+	# print("\n\n\nMODEL")
+	# model.summary()
 	return "MODEL!"
 
 if __name__ == '__main__':
